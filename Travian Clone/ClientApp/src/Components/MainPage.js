@@ -1,27 +1,21 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import MainPageheader from './MainPageheader';
 
-class MainPage extends Component {
+const MainPage = props => {
 
-    constructor(props) {
-        super(props)
-        this.state = props.userData
-        this.LogOut = props.LogOut;
-    }
+    const LogOut = null
 
-    LogOut = null
+    const [state, setState] = useState({})
 
-    state = {}
+    useEffect(() => { setState(props.userData); LogOut = props.LogOut })
 
-    render() {
         
-        return (
-            <div>
-                <MainPageheader userData={this.state} LogOut={this.LogOut} />
-            </div>
-        );
-        
-    }
+    return (
+        <div>
+            <MainPageheader userData={state} LogOut={LogOut} />
+        </div>
+    );
+
 }
 
 export default MainPage;

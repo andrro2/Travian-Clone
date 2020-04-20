@@ -1,58 +1,57 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useState } from 'react';
 
 
-class Registration extends Component {
+const Registration = props => {
 
-    state = {
+    const [state, setState] = useState({
         UserName: '',
         Password: '',
         
-    }
+    })
 
-    handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ UserName: this.state.UserName, Password: this.state.Password })
+            body: JSON.stringify({ UserName: state.UserName, Password: state.Password })
         };
         fetch('https://localhost:44304/registration', requestOptions)
             .then((response) => response.json())
             .then((json) => {
                 if (json)
                 {
-                    this.props.handleRegistration(this.state);
+                    props.handleRegistration(state);
                 }
             })
         
         
     }
 
-        render() {
-            return (
-                <div>
-                    <form onSubmit={this.handleSubmit}>
-                        <input
-                            type="text"
-                            name="UserName"
-                            placeholder="Username"
-                            value={this.state.UserName}
-                            onChange={(e) => this.setState({ UserName: e.target.value })}
-                        />
-                        <input
-                            type="password"
-                            name="Password"
-                            placeholder="Password"
-                            value={this.state.Password}
-                            onChange={(e) => this.setState({ Password: e.target.value })}
-                        />
-                        <input
-                            type="submit"
-                            value="Register"
-                        />
-                    </form>
-                </div>
-            );
-        }
+    return (
+        <div>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    name="UserName"
+                    placeholder="Username"
+                    value={state.UserName}
+                    onChange={(e) => setState({...state, UserName: e.target.value })}
+                />
+                <input
+                    type="password"
+                    name="Password"
+                    placeholder="Password"
+                    value={state.Password}
+                    onChange={(e) => setState({...state, Password: e.target.value })}
+                />
+                <input
+                    type="submit"
+                    value="Register"
+                />
+            </form>
+        </div>
+    );
 }
+
 export default Registration;

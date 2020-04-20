@@ -1,59 +1,59 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useState } from 'react';
 import Registration from './Registration'
 
 
-class Login extends Component {
+const Login = props => {
 
-    state = {
+    const [state, setState] = useState({
         UserName: '',
         Password: '',
         isRegistration: false
-    }
+    })
 
-    refreshLoginStatus = this.props.RefreshLoginStatus;
+    const refreshLoginStatus = props.RefreshLoginStatus;
 
-    handleSubmit = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(this.state)
+            body: JSON.stringify(state)
         };
         fetch('https://localhost:44304/login', requestOptions)
-            .then(() => { this.refreshLoginStatus(); })
+            .then(() => { refreshLoginStatus(); })
         
     }
 
-    handleRegistrationStatusChange = (state) => {
-        let stateClone = {
+    const handleRegistrationStatusChange = (state) => {
+        let stateClone = {...state,
             UserName: state.UserName,
             Password: state.Password,
             isRegistration: false
         }
-        this.setState(stateClone);
+        setState(stateClone);
     }
 
-    handleRegistrationButton = () => { this.setState({ isRegistration : true }) }
+    const handleRegistrationButton = () => { setState({...state, isRegistration : true }) }
 
-    render() {
-        if (!this.state.isRegistration) {
+
+        if (!state.isRegistration) {
             return (
 
                 <div>
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <input
                             type="text"
                             name="UserName"
                             placeholder="Username"
-                            value={this.state.UserName}
-                            onChange={(e) => this.setState({ UserName: e.target.value })}
+                            value={state.UserName}
+                            onChange={(e) => setState({...state, UserName: e.target.value })}
                         />
                         <input
                             type="password"
                             name="Password"
                             placeholder="Password"
-                            value={this.state.Password}
-                            onChange={(e) => this.setState({ Password: e.target.value })}
+                            value={state.Password}
+                            onChange={(e) => setState({...state, Password: e.target.value })}
                         />
                         <input
                             type="submit"
@@ -61,13 +61,13 @@ class Login extends Component {
                         />
                     </form>
 
-                    <button onClick={this.handleRegistrationButton}>Registration</button>
+                    <button onClick={handleRegistrationButton}>Registration</button>
                 </div>
             );
         } else {
-            return (<Registration handleRegistration={this.handleRegistrationStatusChange} />)
+            return (<Registration handleRegistration={handleRegistrationStatusChange} />)
         }
     }
-}
+
 
 export default Login;

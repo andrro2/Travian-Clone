@@ -1,32 +1,26 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 
 
-class MainPageheader extends Component {
+const MainPageheader = props => {
 
-    constructor(props) {
-        super(props)
-        this.state = props.userData
-    }
-
-    state = {
+    const [state, setState] = useState({
         UserName: '',
         isAdmin: false
-    }
+    })
 
+    useEffect(() => { setState({ UserName: props.UserName, isAdmin: props.isAdmin }) }, [])
+    
+    return (
+        <header>
+            <p>{state.isAdmin ? state.UserName + ' (Admin)' : state.UserName}</p>
+            <button>Settings</button>
+            {state.isAdmin &&
+                <button>Admin Settings</button>
+            }
+            <button onClick={props.LogOut}>Logout</button>
 
-    render()
-    {
-        return (
-            <header>
-                <p>{this.state.isAdmin ? this.state.UserName + ' (Admin)' : this.state.UserName}</p>
-                <button>Settings</button>
-                {this.state.isAdmin &&
-                    <button>Admin Settings</button>
-                }
-                <button onClick={this.props.LogOut}>Logout</button>
-
-            </header>
-            )
-    }
+        </header>
+        )
+    
 }
 export default MainPageheader;
